@@ -1,0 +1,47 @@
+logging.level:
+  com.cloudbees.support.pda.importer: INFO
+  org.neo4j.ogm.drivers.http.request: WARN
+
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+    path: /api/health
+    time-to-live: 2000
+  info:
+    enabled: true
+    path: /api/info
+
+info.app-name: plugin-injector
+
+management:
+  info.git:
+    enabled: true
+    mode: full
+  health.diskspace.enabled: false
+
+spring:
+  application.name: plugin-injector
+  http.multipart:
+    enabled: true
+    max-file-size: 100MB
+    max-request-size: 100MB
+  data.neo4j:
+    username: ${NEO4J_USERNAME}
+    password: ${NEO4J_PASSWORD}
+    uri: ${NEO4J_URI}
+    session.scope: request
+
+---
+
+spring:
+  profiles: dev
+  data.neo4j:
+    username: neo4j
+    password: neo4j123
+    uri: http://localhost:7474
+
+server.port: 8181
+
+logging.level:
+  com.cloudbees.support.pda.importer: DEBUG
