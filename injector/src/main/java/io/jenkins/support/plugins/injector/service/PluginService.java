@@ -39,4 +39,8 @@ public class PluginService {
     public PluginService(PluginRepository repository) {
         this.repository = repository;
     }
+
+    public long countPlugin() {
+        return this.repository.count();
+    }
 }

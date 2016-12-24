@@ -22,18 +22,31 @@
  * THE SOFTWARE.
  */
 
-package io.jenkins.support.plugins.injector.repository;
+package io.jenkins.support.plugins.injector.http;
 
-import io.jenkins.support.plugins.injector.model.Plugin;
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.stereotype.Repository;
+import io.jenkins.support.plugins.injector.service.PluginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.stereotype.Component;
+
+import java.util.Collections;
 
 /**
  * @author Adrien Lecharpentier
  */
-@Repository
-public interface PluginRepository extends GraphRepository<Plugin> {
-    @Query("MATCH (pl) RETURN count(distinct pl.name)")
-    long count();
+@Component
+public class Neo4JHealthIndicator extends AbstractHealthIndicator {
+    private final PluginService pluginService;
+
+    @Autowired
+    public Neo4JHealthIndicator(PluginService pluginService) {
+        this.pluginService = pluginService;
+    }
+
+    @Override
+    protected void doHealthCheck(Health.Builder builder) throws Exception {
+        builder.withDetail("plugins", Collections.singletonMap("count", pluginService.countPlugin()))
+            .up();
+    }
 }
