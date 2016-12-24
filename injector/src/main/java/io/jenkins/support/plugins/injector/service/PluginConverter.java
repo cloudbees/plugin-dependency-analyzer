@@ -22,20 +22,35 @@
  * THE SOFTWARE.
  */
 
-package io.jenkins.support.plugins.injector.repository;
+package io.jenkins.support.plugins.injector.service;
 
 import io.jenkins.support.plugins.injector.model.Plugin;
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.Arrays;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 /**
  * @author Adrien Lecharpentier
  */
-@Repository
-public interface PluginRepository extends GraphRepository<Plugin> {
-    Plugin findByNameAndVersion(String name, String version);
+class PluginConverter {
+    static Plugin fromManifest(Manifest manifest) {
+        Attributes mainAttributes = manifest.getMainAttributes();
+        Plugin plugin = new Plugin(
+            mainAttributes.getValue("Implementation-Title"),
+            mainAttributes.getValue("Implementation-Version"),
+            mainAttributes.getValue("Jenkins-Version"));
 
-    @Query("MATCH (pl) RETURN count(distinct pl.name)")
-    long count();
+        String dependencies = mainAttributes.getValue("Plugin-Dependencies");
+        if (dependencies != null) {
+            Arrays.stream(dependencies.split(","))
+                .map(s -> s.split(";"))
+                .forEach(s -> {
+                    String[] info = s[0].split(":");
+                    plugin.dependsOn(new Plugin(info[0], info[1]), s.length == 2);
+                });
+        }
+
+        return plugin;
+    }
 }

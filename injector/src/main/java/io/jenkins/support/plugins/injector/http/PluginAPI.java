@@ -22,20 +22,34 @@
  * THE SOFTWARE.
  */
 
-package io.jenkins.support.plugins.injector.repository;
+package io.jenkins.support.plugins.injector.http;
 
-import io.jenkins.support.plugins.injector.model.Plugin;
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.stereotype.Repository;
+import io.jenkins.support.plugins.injector.service.PluginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * @author Adrien Lecharpentier
  */
-@Repository
-public interface PluginRepository extends GraphRepository<Plugin> {
-    Plugin findByNameAndVersion(String name, String version);
+@RestController
+public class PluginAPI {
+    private final PluginService pluginService;
 
-    @Query("MATCH (pl) RETURN count(distinct pl.name)")
-    long count();
+    @Autowired
+    public PluginAPI(PluginService pluginService) {
+        this.pluginService = pluginService;
+    }
+
+    @PutMapping(value = "/api/plugin")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void injectPlugin(@RequestParam(name = "file") MultipartFile file) throws IOException {
+        pluginService.from(file);
+    }
 }
