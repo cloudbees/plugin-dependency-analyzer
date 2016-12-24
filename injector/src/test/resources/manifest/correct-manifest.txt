@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: alecharp
+Build-Jdk: 1.8.0_111
+Extension-Name: git
+Specification-Title: Integrates Jenkins with FooBar
+Implementation-Title: foobar
+Implementation-Version: 1.0
+Group-Id: org.jenkins-ci.plugins
+Short-Name: foobar
+Long-Name: Jenkins FooBar plugin
+Url: http://no.wiki.com/FooBar+Plugin
+Plugin-Version: 1.0
+Hudson-Version: 1.625.3
+Jenkins-Version: 1.625.3
+Plugin-Dependencies: bar:1.0,foo:1.1;resolution:=optional,barfoo:1.0
+Plugin-Developers: Adrien Lecharpentier
