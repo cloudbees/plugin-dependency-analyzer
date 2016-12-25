@@ -1,5 +1,5 @@
 logging.level:
-  com.cloudbees.support.pda.importer: INFO
+  io.jenkins.support.plugins.injector: INFO
   org.neo4j.ogm.drivers.http.request: WARN
 
 endpoints:
@@ -44,4 +44,4 @@ spring:
 server.port: 8181
 
 logging.level:
-  com.cloudbees.support.pda.importer: DEBUG
+  io.jenkins.support.plugins.injector: DEBUG
