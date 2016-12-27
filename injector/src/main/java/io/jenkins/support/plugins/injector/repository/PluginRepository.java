@@ -36,6 +36,12 @@ import org.springframework.stereotype.Repository;
 public interface PluginRepository extends GraphRepository<Plugin> {
     Plugin findByNameAndVersion(String name, String version);
 
-    @Query("MATCH (pl) RETURN count(distinct pl.name)")
+    @Query("MATCH (pl:Plugin) RETURN count(distinct pl.name)")
     long count();
+
+    @Query("MATCH (pl:Plugin) RETURN count(pl)")
+    long countAllPlugins();
+
+    @Query("MATCH (:Plugin)-[dep:DEPENDS_ON]->(:Plugin) RETURN count(dep)")
+    long countAllDependencies();
 }

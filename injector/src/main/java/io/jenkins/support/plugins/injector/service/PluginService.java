@@ -52,8 +52,16 @@ public class PluginService {
         this.repository = repository;
     }
 
-    public long countPlugin() {
+    public long countUniquePlugins() {
         return this.repository.count();
+    }
+
+    public long countAllPlugins() {
+        return this.repository.countAllPlugins();
+    }
+
+    public long countAllDependencies() {
+        return this.repository.countAllDependencies();
     }
 
     public void from(MultipartFile file) throws IOException {

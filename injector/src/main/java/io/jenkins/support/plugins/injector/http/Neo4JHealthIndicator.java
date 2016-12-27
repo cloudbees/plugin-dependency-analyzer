@@ -30,7 +30,7 @@ import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * @author Adrien Lecharpentier
@@ -46,7 +46,10 @@ public class Neo4JHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
-        builder.withDetail("plugins", Collections.singletonMap("count", pluginService.countPlugin()))
-            .up();
+        HashMap<String, Long> neo4jStats = new HashMap<>();
+        neo4jStats.put("count", pluginService.countUniquePlugins());
+        neo4jStats.put("nodes", pluginService.countAllPlugins());
+        neo4jStats.put("edges", pluginService.countAllDependencies());
+        builder.withDetail("plugins", neo4jStats).up();
     }
 }
