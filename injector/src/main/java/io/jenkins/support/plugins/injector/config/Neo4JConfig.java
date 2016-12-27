@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Adrien Lecharpentier
  */
 @Configuration
-@EnableNeo4jRepositories(basePackages = {"com.cloudbees.support.pda.importer.repository"})
+@EnableNeo4jRepositories(basePackages = {"io.jenkins.support.plugins.injector.repository"})
 @EnableTransactionManagement
 public class Neo4JConfig {
 }
