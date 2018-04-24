@@ -7,7 +7,7 @@ pipeline {
   agent { docker 'alecharp/maven-build-tools' }
 
   stages {
-    stage('Build ') {
+    stage('Build') {
       steps {
         sh 'mvn clean package -Dmaven.test.skip=true'
       }

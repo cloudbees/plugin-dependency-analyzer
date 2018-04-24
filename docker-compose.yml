@@ -1,9 +1,9 @@
 version: '3.4'
 services:
   app:
-    image: ${USER}/injector
+    image: ${USER}/plugin-dependency-analyzer
     volumes:
-      - ${HOME}/.cache/cloudbees-support/plugins:/var/lib/injector/.cache/cloudbees/plugins:ro
+      - ${HOME}/.cache/cloudbees-support/plugins:/var/lib/plugin-dependency-analyzer/.cache/cloudbees/plugins:ro
     environment:
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=foobar
@@ -17,7 +17,7 @@ services:
   neo4j:
     image: neo4j:3.0
     healthcheck:
-      test: ["CMD", "/var/lib/neo4j/bin/neo4j", "status"]
+      test: ["CMD-SHELL", "/var/lib/neo4j/bin/neo4j status"]
       timeout: 10s
       retries: 3
       interval: 5s
