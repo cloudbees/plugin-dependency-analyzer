@@ -7,13 +7,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/")
 public class HomeController {
     private final PluginService pluginService;
 
@@ -21,8 +19,13 @@ public class HomeController {
         this.pluginService = pluginService;
     }
 
-    @GetMapping
-    public String home(final Model model, @RequestParam("page") Optional<Integer> page) {
+    @GetMapping(path = "/")
+    public String home() {
+        return "redirect:plugins";
+    }
+
+    @GetMapping(path = {"/plugins", "/plugins/{page}"})
+    public String home(final Model model, @PathVariable(name = "page", required = false) Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.map(p -> p - 1).orElse(0), 20, Sort.Direction.ASC, "name");
         model.addAttribute("plugins", pluginService.getPluginsWithLimit(pageable));
         return "home";

@@ -7,6 +7,7 @@
 
 <div class="container">
     <h1 data-th-utext="#{plugins.list.title}"></h1>
+    <h2 data-th-utext="#{plugins.list.entries(${plugins.getTotalElements()})}"></h2>
     <table style="width: 100%">
         <thead>
         <tr>
@@ -28,25 +29,25 @@
     <nav>
         <ul class="pagination" data-th-if="${plugins.totalPages != 1}">
             <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
-                <a class="page-link" data-th-href="@{./(page=1)}">
+                <a class="page-link" data-th-href="@{/plugins/1}">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only" data-th-utext="pagination.first"></span>
                 </a>
             </li>
             <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
-                <a class="page-link" data-th-href="@{./(page=${plugins.number})}">
+                <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.number})}">
                     <span aria-hidden="true">&larr;</span>
                     <span class="sr-only" data-th-utext="pagination.previous"></span>
                 </a>
             </li>
             <li class="page-item" data-th-attrappend="class=${plugins.number + 1 == plugins.totalPages} ? ' disabled'">
-                <a class="page-link" data-th-href="@{./(page=${plugins.number + 2})}">
+                <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.number + 2})}">
                     <span aria-hidden="true">&rarr;</span>
                     <span class="sr-only" data-th-utext="pagination.next"></span>
                 </a>
             </li>
-            <li class="page-item" data-th-attrappend="class=${plugins.number + 1 == plugins.totalPages} ? ' disabled'">
-                <a class="page-link" data-th-href="@{./(page=${plugins.totalPages})}">
+            <li class="page-item" data-th-attrappend="class=${plugins.isLast()} ? ' disabled'">
+                <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.totalPages})}">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only" data-th-utext="pagination.last"></span>
                 </a>

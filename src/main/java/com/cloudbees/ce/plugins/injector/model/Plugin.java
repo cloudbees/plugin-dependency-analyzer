@@ -33,11 +33,11 @@ public class Plugin {
     }
 
     public Plugin(String name, String version) {
-        this(name, version, null, Tier.TIER_4);
+        this(name, version, null);
     }
 
     public Plugin(String name, String version, String coreVersion) {
-        this(name, version, coreVersion, Tier.TIER_4);
+        this(name, version, coreVersion, Tier.TIER_3);
     }
 
     public Plugin(String name, String version, String coreVersion, Tier tier) {
