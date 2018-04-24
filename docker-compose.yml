@@ -4,9 +4,9 @@ services:
     image: ${USER}/plugin-dependency-analyzer
     volumes:
       - ${HOME}/.cache/cloudbees-support/plugins:/var/lib/plugin-dependency-analyzer/.cache/cloudbees/plugins:ro
+    env_file:
+      - .docker-env
     environment:
-      - NEO4J_USER=neo4j
-      - NEO4J_PASSWORD=foobar
       - NEO4J_HOST=neo4j
     ports:
       - 80:8080
@@ -24,8 +24,8 @@ services:
       start_period: 20s
     volumes:
       - db-data:/data
-    environment:
-      - NEO4J_AUTH=neo4j/foobar
+    env_file:
+      - .docker-env
     expose:
       - "7687"
     ports:

@@ -2,10 +2,7 @@
 Create a map of all known plugins as a graph.
 
 == Run locally
-
-IMPORTANT: first build the docker image of the injector module
-
 [source,sh]
 ----
-docker-compose up
+make run
 ----

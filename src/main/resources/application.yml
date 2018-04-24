@@ -1,7 +1,7 @@
 spring:
   data.neo4j:
     embedded.enabled: false
-    username: ${NEO4J_USER}
+    username: neo4j
     password: ${NEO4J_PASSWORD}
     uri: bolt://${NEO4J_HOST:localhost}:${NEO4J_PORT:7687}
   messages:
