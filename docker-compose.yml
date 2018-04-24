@@ -1,0 +1,38 @@
+version: '3.4'
+services:
+  app:
+    image: ${USER}/injector
+    volumes:
+      - ${HOME}/.cache/cloudbees-support/plugins:/var/lib/injector/.cache/cloudbees/plugins:ro
+    environment:
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=foobar
+      - NEO4J_HOST=neo4j
+    ports:
+      - 80:8080
+    depends_on:
+      - neo4j
+    networks:
+      - graph
+  neo4j:
+    image: neo4j:3.0
+    healthcheck:
+      test: ["CMD", "/var/lib/neo4j/bin/neo4j", "status"]
+      timeout: 10s
+      retries: 3
+      interval: 5s
+      start_period: 20s
+    volumes:
+      - db-data:/data
+    environment:
+      - NEO4J_AUTH=neo4j/foobar
+    expose:
+      - "7687"
+    ports:
+      - 7474:7474
+    networks:
+      - graph
+volumes:
+  db-data:
+networks:
+  graph:

@@ -1,19 +1,18 @@
-FROM openjdk:8u102-jre
+FROM openjdk:8-jre-alpine
 
-ENV HOME /home/plugininjector
-RUN groupadd -g 1000 plugininjector && \
-    useradd -c "Plugin Dependency Analyzer Injector" -d ${HOME} -u 1000 -g 1000 -m plugininjector
+RUN apk add --update --no-cache curl tini
+RUN adduser -h /var/lib/injector -D -u 1000 injector injector
 
-ADD src/main/docker/docker-entrypoint.sh ${HOME}
-RUN chmod 755 ${HOME}/docker-entrypoint.sh
+USER injector
 
-WORKDIR $HOME
-USER plugininjector
+ENV SPRING_PROFILES_ACTIVE production
+ARG PORT=8080
+EXPOSE ${PORT}
+ENV PORT ${PORT}
 
-# Application profile to use
-ENV SPRING_PROFILES_ACTIVE prod
+ENTRYPOINT ["/sbin/tini", "-g", "--"]
+CMD ["/var/lib/injector/docker-entrypoint.sh"]
+HEALTHCHECK --interval=15s --timeout=2s --retries=3 \
+  CMD /var/lib/injector/docker-healthcheck.sh ${PORT}
 
-EXPOSE 8080
-ENTRYPOINT ["/home/plugininjector/docker-entrypoint.sh"]
-
-ADD target/injector.jar ${HOME}/injector.jar
+COPY --chown=injector:injector src/main/docker/*.sh target/injector.jar /var/lib/injector/
