@@ -4,6 +4,7 @@ import com.cloudbees.ce.plugins.injector.service.PluginService;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
+@Order(value = 100)
 public class PluginsImporterRunner implements CommandLineRunner {
     private static final Logger LOG = getLogger(PluginsImporterRunner.class);
 
