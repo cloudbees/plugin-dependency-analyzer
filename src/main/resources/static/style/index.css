@@ -1,0 +1,25 @@
+.table .row {
+    line-height: 3em;
+    height: 3em;
+    border-top: 1px solid #e6eaee;
+}
+.table .row:last-child {
+    border-bottom: 1px solid #e6eaee;
+}
+.table .row.header {
+    font-weight: 700;
+    font-variant: small-caps;
+}
+.table .row:not(.header):hover {
+    background-color: #fafbfd;
+}
+.table .row .cell {
+    padding: 0 1vh;
+}
+.table .row .cell:first-child {
+    flex: 1 1 200px;
+    border-left: 1px solid #e6eaee;
+}
+.table .row .cell:last-child {
+    border-right: 1px solid #e6eaee;
+}

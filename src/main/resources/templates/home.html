@@ -8,24 +8,20 @@
 <div class="container">
     <h1 data-th-utext="#{plugins.list.title}"></h1>
     <h2 data-th-utext="#{plugins.list.entries(${plugins.getTotalElements()})}"></h2>
-    <table style="width: 100%">
-        <thead>
-        <tr>
-            <th data-th-utext="#{plugin.name}"></th>
-            <th data-th-utext="#{plugin.tier}"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr data-th-each="plugin : ${plugins}">
-            <td data-th-text="${plugin.name}"></td>
-            <td>
+    <div class="table">
+        <div class="row header">
+            <div class="cell" data-th-utext="#{plugin.name}"></div>
+            <div class="cell" data-th-utext="#{plugin.tier}"></div>
+        </div>
+        <div data-th-each="plugin : ${plugins}" class="row">
+            <div class="cell" data-th-text="${plugin.name}"></div>
+            <div class="cell">
                 <span class="badge"
                       data-th-classappend="${plugin.tier} == 'TIER_1' ? 'badge-success' : (${plugin.tier} == 'TIER_2' ? 'badge-info' : (${plugin.tier} == 'TIER_3' ? 'badge-warning' : (${plugin.tier} == 'TIER_4' ? 'badge-danger')))"
                       data-th-text="${plugin.tier}"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
     <nav>
         <ul class="pagination" data-th-if="${plugins.totalPages != 1}">
             <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
