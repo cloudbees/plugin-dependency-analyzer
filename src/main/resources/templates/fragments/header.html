@@ -3,18 +3,28 @@
 <head data-th-fragment="head">
     <meta charset="UTF-8">
     <title>CloudBees Support Plugins</title>
-    <link rel="stylesheet" href="https://getbootstrap.com/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" data-th-href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}"/>
     <link rel="stylesheet" data-th-href="@{/style/index.css}"/>
-    <script type="javascript" src="https://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script type="application/javascript" data-th-src="@{/webjars/jquery/dist/jquery.min.js}"></script>
+    <script type="application/javascript" data-th-src="@{/webjars/bootstrap/dist/js/bootstrap.min.js}"></script>
 </head>
 
 <body>
-<div data-th-fragment="navbar" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">CloudBees</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark active" data-th-href="@{/plugins}">Plugins</a>
-    </nav>
-</div>
+<nav data-th-fragment="navbar" class="navbar navbar-expand-md navbar-light bg-light justify-content-between">
+    <a data-th-href="@{/}" class="navbar-brand">CloudBees</a>
+
+    <div class="collapse navbar-collapse mr-auto" id="navbarLinks">
+        <ul class="navbar-nav">
+            <li class="navbar-item">
+                <a class="p-2 text-dark" data-th-href="@{/plugins}">Plugins</a>
+            </li>
+        </ul>
+    </div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
 </body>
 
 </html>

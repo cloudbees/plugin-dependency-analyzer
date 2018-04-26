@@ -14,7 +14,7 @@
     background-color: #fafbfd;
 }
 .table .row .cell {
-    padding: 0 1vh;
+    padding: 0 2vw;
 }
 .table .row .cell:first-child {
     flex: 1 1 200px;

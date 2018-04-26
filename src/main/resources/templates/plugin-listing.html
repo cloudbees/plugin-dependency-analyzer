@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-replace="~{fragments/header :: head}">
+</head>
+<body>
+<div data-th-replace="~{fragments/header :: navbar}"></div>
+
+<div class="container">
+    <h2 data-th-utext="#{plugins.list.entries(${plugins.getTotalElements()})}"></h2>
+    <div data-th-if="${plugins.getTotalElements()} > 0">
+        <div class="table">
+            <div class="row header">
+                <div class="cell" data-th-utext="#{plugin.name}"></div>
+                <div class="cell" data-th-utext="#{plugin.tier}"></div>
+            </div>
+            <div data-th-each="plugin : ${plugins}" class="row">
+                <div class="cell" data-th-text="${plugin.name}"></div>
+                <div class="cell">
+                <span class="badge"
+                      data-th-classappend="${plugin.tier} == 'TIER_1' ? 'badge-success' : (${plugin.tier} == 'TIER_2' ? 'badge-info' : (${plugin.tier} == 'TIER_3' ? 'badge-warning' : (${plugin.tier} == 'TIER_4' ? 'badge-danger')))"
+                      data-th-text="${plugin.tier}"></span>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul class="pagination" data-th-if="${plugins.totalPages != 1}">
+                <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
+                    <a class="page-link" data-th-href="@{/plugins/1}">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only" data-th-utext="pagination.first"></span>
+                    </a>
+                </li>
+                <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
+                    <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.number})}">
+                        <span aria-hidden="true">&larr;</span>
+                        <span class="sr-only" data-th-utext="pagination.previous"></span>
+                    </a>
+                </li>
+                <li class="page-item" data-th-attrappend="class=${plugins.number + 1 == plugins.totalPages} ? ' disabled'">
+                    <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.number + 2})}">
+                        <span aria-hidden="true">&rarr;</span>
+                        <span class="sr-only" data-th-utext="pagination.next"></span>
+                    </a>
+                </li>
+                <li class="page-item" data-th-attrappend="class=${plugins.isLast()} ? ' disabled'">
+                    <a class="page-link" data-th-href="@{/plugins/{page}(page=${plugins.totalPages})}">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only" data-th-utext="pagination.last"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>
