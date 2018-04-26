@@ -5,6 +5,7 @@ import com.cloudbees.ce.plugins.injector.model.PluginNameAndTier;
 import com.cloudbees.ce.plugins.injector.model.Tier;
 import com.cloudbees.ce.plugins.injector.repository.DependencyRepository;
 import com.cloudbees.ce.plugins.injector.repository.PluginRepository;
+import hudson.util.VersionNumber;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,11 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * @author Adrien Lecharpentier
@@ -35,7 +39,7 @@ public class PluginService {
         plugin.getDependencies().forEach(
               dep -> {
                   dep.setDependency(
-                        pluginRepository.findByNameAndVersion(dep.getDependency().getName(), dep.getDependency().getVersion().toString())
+                        this.getPlugin(dep.getDependency().getName(), dep.getDependency().getVersion())
                               .orElse(dep.getDependency())
                   );
                   dep.setId(
@@ -46,7 +50,7 @@ public class PluginService {
               }
         );
         plugin.setId(
-              pluginRepository.findByNameAndVersion(plugin.getName(), plugin.getVersion().toString())
+              this.getPlugin(plugin.getName(), plugin.getVersion())
                     .map(Plugin::getId).orElse(null)
         );
         return pluginRepository.save(plugin);
@@ -89,10 +93,22 @@ public class PluginService {
         pluginRepository.setTierForPlugin(pluginName, tier.name());
     }
 
+    @Transactional(readOnly = true)
     public Page<PluginNameAndTier> getPluginsWithLimit(Pageable page) {
         return pluginRepository.getPluginsWithTier(page);
     }
 
+    @Transactional(readOnly = true)
+    public List<VersionNumber> getPluginVersions(String name) {
+        return pluginRepository.getVersionsOfPlugin(name).stream().sorted().collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Plugin> getPlugin(String name, VersionNumber version) {
+        return Optional.ofNullable(pluginRepository.findByNameAndVersion(name, version));
+    }
+
+    @Transactional(readOnly = true)
     public long countUniquePlugins() {
         return pluginRepository.countUniquePlugins();
     }

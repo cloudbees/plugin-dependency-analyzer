@@ -14,7 +14,9 @@
                 <div class="cell" data-th-utext="#{plugin.tier}"></div>
             </div>
             <div data-th-each="plugin : ${plugins}" class="row">
-                <div class="cell" data-th-text="${plugin.name}"></div>
+                <div class="cell">
+                    <a data-th-href="@{/plugin/{name}(name = ${plugin.name})}" data-th-text="${plugin.name}"></a>
+                </div>
                 <div class="cell">
                 <span class="badge"
                       data-th-classappend="${plugin.tier} == 'TIER_1' ? 'badge-success' : (${plugin.tier} == 'TIER_2' ? 'badge-info' : (${plugin.tier} == 'TIER_3' ? 'badge-warning' : (${plugin.tier} == 'TIER_4' ? 'badge-danger')))"

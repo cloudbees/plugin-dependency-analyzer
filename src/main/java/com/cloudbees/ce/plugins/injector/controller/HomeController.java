@@ -1,6 +1,8 @@
 package com.cloudbees.ce.plugins.injector.controller;
 
+import com.cloudbees.ce.plugins.injector.model.Plugin;
 import com.cloudbees.ce.plugins.injector.service.PluginService;
+import hudson.util.VersionNumber;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,13 +23,33 @@ public class HomeController {
 
     @GetMapping(path = "/")
     public String home() {
-        return "redirect:plugins";
+        return "redirect:/plugins";
     }
 
     @GetMapping(path = {"/plugins", "/plugins/{page}"})
-    public String home(final Model model, @PathVariable(name = "page", required = false) Optional<Integer> page) {
-        Pageable pageable = PageRequest.of(page.map(p -> p - 1).orElse(0), 20, Sort.Direction.ASC, "name");
+    public String home(final Model model, @PathVariable(name = "page", required = false) Integer page) {
+        Pageable pageable = PageRequest.of((page == null ? 1 : page) - 1, 15, Sort.Direction.ASC, "name");
         model.addAttribute("plugins", pluginService.getPluginsWithLimit(pageable));
-        return "home";
+        return "plugin-listing";
+    }
+
+    @GetMapping(path = "/plugin/{name}")
+    public String pluginDetails(final Model model, @PathVariable(name = "name") String name) {
+        model.addAttribute("name", name);
+        model.addAttribute("versions", pluginService.getPluginVersions(name));
+        return "plugin-versions-listing";
+    }
+
+    @GetMapping(path = "/plugin/{name}/{version}")
+    public String pluginVersionDetails(final Model model,
+                                       @PathVariable(name = "name") String name,
+                                       @PathVariable(name = "version") VersionNumber version) {
+        Optional<Plugin> optionalPlugin = pluginService.getPlugin(name, version);
+        return optionalPlugin
+              .map(pl -> {
+                  model.addAttribute("plugin", pl);
+                  return "plugin-details";
+              })
+              .orElseGet(() -> "redirect:/plugin/" + name);
     }
 }
