@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-replace="~{fragments/header :: head}">
+</head>
+<body>
+<div data-th-replace="~{fragments/header :: navbar}"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4"><span data-th-text="${name}"></span></h1>
+    </div>
+    <h2 class="display-5" data-th-utext="#{plugin.numberOfVersions(${name}, ${#lists.size(versions)})}"></h2>
+    <ul>
+        <li data-th-each="version: ${versions}">
+            <a data-th-href="@{/plugin/{name}/{version}(name = ${name}, version = ${version})}" data-th-text="${version}"></a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

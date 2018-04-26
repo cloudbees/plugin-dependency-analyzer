@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-replace="~{fragments/header :: head}">
+</head>
+<body>
+<div data-th-replace="~{fragments/header :: navbar}"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4"><span data-th-text="${plugin.name}"></span> :: <span class="sub-header" data-th-text="${plugin.version}"></span></h1>
+    </div>
+    <div style="width: 100%; min-height: 250px;" id="plugins-dependency-graph"></div>
+</div>
+
+<script type="application/javascript" data-th-src="@{/webjars/d3/dist/d3.min.js}"></script>
+<script data-th-inline="javascript" type="application/javascript">
+    const plugin = /*[[${plugin}]]*/ {};
+    console.debug(plugin);
+</script>
+</body>
+</html>
