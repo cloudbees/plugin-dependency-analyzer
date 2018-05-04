@@ -7,15 +7,117 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1 class="display-4"><span data-th-text="${plugin.name}"></span> :: <span class="sub-header" data-th-text="${plugin.version}"></span></h1>
+        <h1 class="display-4">
+            <span data-th-text="${plugin.name}"></span> :: <span class="sub-header"
+                                                                 data-th-text="${plugin.version}"></span>
+        </h1>
+        <span class="badge"
+              data-th-classappend="${plugin.tier.name()} == 'TIER_1' ? 'badge-success' : (${plugin.tier.name()} == 'TIER_2' ? 'badge-info' : (${plugin.tier.name()} == 'TIER_3' ? 'badge-warning' : (${plugin.tier.name()} == 'TIER_4' ? 'badge-danger')))"
+              data-th-text="${plugin.tier}"></span>
     </div>
-    <div style="width: 100%; min-height: 250px;" id="plugins-dependency-graph"></div>
+
+    <ul class="nav nav-tabs" id="pluginsDependenciesDetails" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="listing-tab" data-toggle="tab" href="#listing" role="tab">Listing</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="graph-tab" data-toggle="tab" href="#graph" role="tab">Graph</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" role="tabpanel" id="listing">
+            <span data-th-if="${plugin.dependencies.size()} > 0">
+                <h2 class="display-5">Dependencies</h2>
+                <ul style="display: inline-flex; flex-wrap: wrap; list-style: none">
+                    <li data-th-each="dep: ${plugin.dependencies}" style="margin: 0 0.5ex">
+                        <a data-th-href="@{/plugin/{name}/{version}(name = ${dep.dependency.name}, version = ${dep.dependency.version})}">
+                            <span data-th-text="${dep.dependency.name}"></span> :
+                            <span data-th-text="${dep.dependency.version}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            <span data-th-if="${plugin.dependencies.size()} == 0">
+                No dependencies
+            </span>
+        </div>
+        <div class="tab-pane fade" role="tabpanel" id="graph">
+            <div style="width: 100%; min-height: 250px;" id="plugins-dependency-graph"></div>
+        </div>
+    </div>
 </div>
 
-<script type="application/javascript" data-th-src="@{/webjars/d3/dist/d3.min.js}"></script>
+<script type="application/javascript" data-th-src="@{/webjars/d3/dist/d3.js}"></script>
+<script type="application/javascript" data-th-src="@{/webjars/d3-force/build/d3-force.js}"></script>
 <script data-th-inline="javascript" type="application/javascript">
-    const plugin = /*[[${plugin}]]*/ {};
-    console.debug(plugin);
+    (() => {
+        const plugin = [[${plugin}]];
+        const svg = d3.select('div#plugins-dependency-graph').append('svg:svg')
+                .attr('width', '100%').attr('height', '400'),
+            width = 690,
+            height = 400;
+        const nodeSize = 10;
+
+        /****************************/
+        const createNode = (plugin, root = false) => {
+            const {name, version, id} = plugin;
+            return {name, version, id, root};
+        };
+        const createLink = (plugin, dep) => {
+            const source = plugin.id;
+            const {dependency: {id: target}, optional: value} = dep;
+            return {source, target, value};
+        };
+        let nodes = [];
+        let links = [];
+        const flatten = pl => {
+            nodes = [...nodes, createNode(pl, pl.id === plugin.id)];
+            for (let dep of pl.dependencies) {
+                links = [...links, createLink(pl, dep)];
+                flatten(dep.dependency)
+            }
+        };
+        flatten(plugin);
+        /****************************/
+
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id))
+            .force("charge", d3.forceManyBody())
+            .force('collide', d3.forceCollide(nodeSize * 1.5))
+            .force("center", d3.forceCenter(width / 2, height / 2));
+
+        const link = svg.append('g')
+            .attr('class', 'links')
+            .selectAll('line')
+            .data(links)
+            .enter().append('line');
+
+        const node = svg.append('g')
+            .attr('class', 'nodes')
+            .selectAll('circle')
+            .data(nodes)
+            .enter()
+            .append('circle').attr('r', nodeSize).attr('fill', d => d.root ? 'blue' : 'black');
+        node.append('title').text(pl => `${pl.name}:${pl.version}`);
+
+        simulation
+            .nodes(nodes)
+            .on('tick', () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y)
+                    .attr('stroke', '#ccc')
+                    .attr('stroke-width', '3px')
+                    .attr('stroke-dasharray', d => d.value ? '1 2' : '0');
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+            });
+        simulation.force('link').links(links)
+    })();
 </script>
 </body>
 </html>

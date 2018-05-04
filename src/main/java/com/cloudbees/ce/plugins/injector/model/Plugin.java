@@ -1,6 +1,7 @@
 package com.cloudbees.ce.plugins.injector.model;
 
 import com.cloudbees.ce.plugins.injector.config.VersionNumberMapping;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hudson.util.VersionNumber;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -24,8 +25,10 @@ public class Plugin {
 
     private String name;
     @Convert(VersionNumberMapping.VersionNumberConverter.class)
+    @JsonSerialize(using = VersionNumberMapping.VersionNumberJsonSerializer.class)
     private VersionNumber coreVersion;
     @Convert(VersionNumberMapping.VersionNumberConverter.class)
+    @JsonSerialize(using = VersionNumberMapping.VersionNumberJsonSerializer.class)
     private VersionNumber version;
     private Tier tier;
 

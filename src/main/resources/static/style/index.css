@@ -23,3 +23,6 @@
 .table .row .cell:last-child {
     border-right: 1px solid #e6eaee;
 }
+.container {
+    margin-top: 1em;
+}
