@@ -5,6 +5,7 @@ import com.cloudbees.ce.plugins.injector.model.PluginNameAndTier;
 import hudson.util.VersionNumber;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.neo4j.annotation.Depth;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Repository
 public interface PluginRepository extends Neo4jRepository<Plugin, String> {
+    @Depth(value = 2)
     Plugin findByNameAndVersion(String name, VersionNumber version);
 
     @Query("MATCH (n:Plugin {name:{0}}) RETURN n.version as version")
