@@ -26,3 +26,12 @@
 .container {
     margin-top: 1em;
 }
+
+.tab-content {
+    padding: 1em;
+    border: 1px solid #dee2e6;
+    border-top-width: 0;
+}
+.tab-content .tab-pane ul {
+    padding: 0;
+}
