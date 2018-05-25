@@ -18,7 +18,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+    <spring-boot.version>2.0.2.RELEASE</spring-boot.version>
   </properties>
 
   <developers>
@@ -139,6 +139,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <profiles>
+            <profile>dev</profile>
+          </profiles>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
