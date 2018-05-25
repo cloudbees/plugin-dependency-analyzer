@@ -30,9 +30,9 @@
                 <h2 class="display-5">Dependencies</h2>
                 <ul style="display: inline-flex; flex-wrap: wrap; list-style: none">
                     <li data-th-each="dep: ${plugin.dependencies}" style="margin: 0 0.5ex">
-                        <a data-th-href="@{/plugin/{name}/{version}(name = ${dep.dependency.name}, version = ${dep.dependency.version})}">
-                            <span data-th-text="${dep.dependency.name}"></span> :
-                            <span data-th-text="${dep.dependency.version}"></span>
+                        <a data-th-href="@{/plugin/{name}/{version}(name = ${dep.target.name}, version = ${dep.target.version})}">
+                            <span data-th-text="${dep.target.name}"></span> :
+                            <span data-th-text="${dep.target.version}"></span>
                         </a>
                     </li>
                 </ul>
@@ -65,7 +65,7 @@
         };
         const createLink = (plugin, dep) => {
             const source = plugin.id;
-            const {dependency: {id: target}, optional: value} = dep;
+            const {target: {id: target}, optional: value} = dep;
             return {source, target, value};
         };
         let nodes = [];
@@ -74,7 +74,7 @@
             nodes = [...nodes, createNode(pl, pl.id === plugin.id)];
             for (let dep of pl.dependencies) {
                 links = [...links, createLink(pl, dep)];
-                flatten(dep.dependency)
+                flatten(dep.target)
             }
         };
         flatten(plugin);

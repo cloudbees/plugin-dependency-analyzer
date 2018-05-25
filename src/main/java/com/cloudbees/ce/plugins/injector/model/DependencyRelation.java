@@ -19,14 +19,14 @@ public class DependencyRelation {
     @JsonIgnore @StartNode
     private Plugin source;
     @EndNode
-    private Plugin dependency;
+    private Plugin target;
 
     private DependencyRelation() {
     }
 
-    DependencyRelation(Plugin source, Plugin dependency, boolean optional) {
+    DependencyRelation(Plugin source, Plugin target, boolean optional) {
         this.source = source;
-        this.dependency = dependency;
+        this.target = target;
         this.optional = optional;
     }
 
@@ -57,12 +57,12 @@ public class DependencyRelation {
         return this;
     }
 
-    public Plugin getDependency() {
-        return dependency;
+    public Plugin getTarget() {
+        return target;
     }
 
-    public void setDependency(Plugin dep) {
-        this.dependency = dep;
+    public void setTarget(Plugin dep) {
+        this.target = dep;
     }
 
     @Override
@@ -72,11 +72,11 @@ public class DependencyRelation {
         DependencyRelation that = (DependencyRelation) o;
         return optional == that.optional &&
               Objects.equals(source, that.source) &&
-              Objects.equals(dependency, that.dependency);
+              Objects.equals(target, that.target);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(source, dependency);
+        return Objects.hash(source, target);
     }
 }

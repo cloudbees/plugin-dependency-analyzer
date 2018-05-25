@@ -38,13 +38,13 @@ public class PluginService {
     public Plugin save(Plugin plugin) {
         plugin.getDependencies().forEach(
               dep -> {
-                  dep.setDependency(
-                        this.getPlugin(dep.getDependency().getName(), dep.getDependency().getVersion())
-                              .orElse(dep.getDependency())
+                  dep.setTarget(
+                        this.getPlugin(dep.getTarget().getName(), dep.getTarget().getVersion())
+                              .orElse(dep.getTarget())
                   );
                   dep.setId(
                         dependencyRepository.getDependencyIdBySourceAndOptionalAndTarget(
-                              dep.getSource().getName(), dep.getSource().getVersion().toString(), dep.isOptional(), dep.getDependency().getName(), dep.getDependency().getVersion().toString()
+                              dep.getSource().getName(), dep.getSource().getVersion().toString(), dep.isOptional(), dep.getTarget().getName(), dep.getTarget().getVersion().toString()
                         ).orElse(null)
                   );
               }
