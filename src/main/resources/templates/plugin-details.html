@@ -71,10 +71,12 @@
         let nodes = [];
         let links = [];
         const flatten = pl => {
-            nodes = [...nodes, createNode(pl, pl.id === plugin.id)];
-            for (let dep of pl.dependencies) {
-                links = [...links, createLink(pl, dep)];
-                flatten(dep.target)
+            if (!(nodes.find(node => node.id === pl.id))) {
+                nodes = [...nodes, createNode(pl, pl.id === plugin.id)];
+                for (let dep of pl.dependencies) {
+                    links = [...links, createLink(pl, dep)];
+                    flatten(dep.target)
+                }
             }
         };
         flatten(plugin);
