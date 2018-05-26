@@ -58,7 +58,22 @@
                 .attr('width', '100%').attr('height', '400'),
             width = 690,
             height = 400;
-        const nodeSize = 10;
+        const nodeSize = 5;
+        const color = '#999';
+
+        svg.append('defs').append('marker')
+            .attr('id', 'arrowhead')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 13)
+            .attr('refY', 0)
+            .attr('orient', 'auto')
+            .attr('markerWidth', 10)
+            .attr('markerHeight', 10)
+            .attr('xoverflow', 'visible')
+            .append('svg:path')
+            .attr('d', 'M 0, -5 L 10, 0 L 0, 5')
+            .attr('fill', color)
+            .style('stroke', 'none');
 
         /****************************/
         const createNode = (plugin, root = false) => {
@@ -86,7 +101,7 @@
 
         const simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
+            .force("charge", d3.forceManyBody().strength(() => -75))
             .force('collide', d3.forceCollide(nodeSize * 1.5))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -94,14 +109,41 @@
             .attr('class', 'links')
             .selectAll('line')
             .data(links)
-            .enter().append('line');
+            .enter()
+            .append('line')
+            .attr('class', 'link')
+            .attr('marker-end', 'url(#arrowhead)');
 
         const node = svg.append('g')
             .attr('class', 'nodes')
             .selectAll('circle')
             .data(nodes)
             .enter()
-            .append('circle').attr('r', nodeSize).attr('fill', d => d.root ? 'blue' : 'black');
+            .append('g')
+            .on('click', function(d) {
+                d.fx = null;
+                d.fy = null;
+            })
+            .call(d3.drag()
+                .on('start', function(d) {
+                    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on('drag', function(d) {
+                    d.fx = d3.event.x;
+                    d.fy = d3.event.y;
+                })
+                .on('end', function(d) {
+                    if (!d3.event.active) simulation.alphaTarget(0);
+                    d.fx = d3.event.x;
+                    d.fy = d3.event.y;
+                })
+            );
+        node.append('circle')
+            .attr('r', nodeSize)
+            .attr('fill', '#fff')
+            .attr('stroke', d => d.root ? 'blue' : 'black');
         node.append('title').text(pl => `${pl.name}:${pl.version}`);
 
         simulation
@@ -112,13 +154,11 @@
                     .attr("y1", d => d.source.y)
                     .attr("x2", d => d.target.x)
                     .attr("y2", d => d.target.y)
-                    .attr('stroke', '#ccc')
-                    .attr('stroke-width', '3px')
+                    .attr('stroke', color)
+                    .attr('stroke-width', '1px')
                     .attr('stroke-dasharray', d => d.value ? '1 2' : '0');
 
-                node
-                    .attr("cx", d => d.x)
-                    .attr("cy", d => d.y);
+                node.attr('transform', d => `translate(${d.x}, ${d.y})`);
             });
         simulation.force('link').links(links)
     })();
