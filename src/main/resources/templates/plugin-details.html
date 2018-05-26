@@ -20,7 +20,7 @@
         <li class="nav-item">
             <a class="nav-link active" id="listing-tab" data-toggle="tab" href="#listing" role="tab">Listing</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" data-th-if="${plugin.dependencies.size()} > 0">
             <a class="nav-link" id="graph-tab" data-toggle="tab" href="#graph" role="tab">Graph</a>
         </li>
     </ul>
@@ -43,7 +43,7 @@
                 No dependencies
             </span>
         </div>
-        <div class="tab-pane fade" role="tabpanel" id="graph">
+        <div class="tab-pane fade" role="tabpanel" id="graph" data-th-if="${plugin.dependencies.size()} > 0">
             <div style="width: 100%; min-height: 250px;" id="plugins-dependency-graph"></div>
         </div>
     </div>
