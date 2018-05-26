@@ -8,8 +8,8 @@
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">
-            <span data-th-text="${plugin.name}"></span> :: <span class="sub-header"
-                                                                 data-th-text="${plugin.version}"></span>
+            <span data-th-text="${plugin.name}"></span> ::
+            <span class="sub-header" data-th-text="${plugin.version}"></span>
         </h1>
         <span class="badge"
               data-th-classappend="${plugin.tier.name()} == 'TIER_1' ? 'badge-success' : (${plugin.tier.name()} == 'TIER_2' ? 'badge-info' : (${plugin.tier.name()} == 'TIER_3' ? 'badge-warning' : (${plugin.tier.name()} == 'TIER_4' ? 'badge-danger')))"
@@ -30,7 +30,9 @@
                 <ul style="display: inline-flex; flex-wrap: wrap; list-style: none">
                     <li data-th-each="dep: ${plugin.dependencies}" style="margin: 0 0.5ex">
                         <a data-th-href="@{/plugin/{name}/{version}(name = ${dep.target.name}, version = ${dep.target.version})}"
-                           class="badge badge-pill badge-primary">
+                           data-th-title="'This dependency is ' + (!${dep.optional} ? 'not ': ' ') + 'optional'"
+                           class="badge badge-pill"
+                           data-th-classappend="${dep.optional} ? 'badge-secondary' : 'badge-danger'">
                             <span data-th-text="${dep.target.name}"></span> :
                             <span data-th-text="${dep.target.version}"></span>
                         </a>
