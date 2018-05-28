@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -51,5 +52,14 @@ public class HomeController {
                   return "plugin-details";
               })
               .orElseGet(() -> "redirect:/plugin/" + name);
+    }
+
+    @GetMapping(path = "/search")
+    public String search(final Model model,
+                         @RequestParam("q") String pluginName,
+                         @RequestParam(value = "page", required = false) Integer page) {
+        Pageable pageable = PageRequest.of((page == null ? 1 : page) - 1, 15, Sort.Direction.ASC, "name");
+        model.addAttribute("plugins", pluginService.getPluginsWithName(pluginName, pageable));
+        return "plugin-listing";
     }
 }

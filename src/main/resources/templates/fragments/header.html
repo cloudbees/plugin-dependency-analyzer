@@ -14,11 +14,14 @@
     <a data-th-href="@{/}" class="navbar-brand">CloudBees</a>
 
     <div class="collapse navbar-collapse mr-auto" id="navbarLinks">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="navbar-item">
                 <a class="p-2 text-dark" data-th-href="@{/plugins}">Plugins</a>
             </li>
         </ul>
+        <form action="/search" class="form-inline my-2 my-lg-0" method="GET">
+            <input type="text" accesskey="?" class="form-control mr-sm-2" placeholder="Search" name="q"/>
+        </form>
     </div>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">

@@ -112,4 +112,9 @@ public class PluginService {
     public long countUniquePlugins() {
         return pluginRepository.countUniquePlugins();
     }
+
+    @Transactional(readOnly = true)
+    public Page<PluginNameAndTier> getPluginsWithName(String name, Pageable page) {
+        return pluginRepository.findAllByName("(?i)" + name.toLowerCase(), page);
+    }
 }
