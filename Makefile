@@ -16,7 +16,6 @@ docker: target/plugin-dependency-analyzer.jar
 	@docker build -t $(IMAGE) --build-arg PORT=$(PORT) -f src/main/docker/Dockerfile $(CURDIR)
 
 run: docker
-	@#docker-compose up --quiet-pull --abort-on-container-exit --remove-orphans
 	@docker run --rm -d \
 	  --name plugins-database \
 		--env-file .docker-env \
