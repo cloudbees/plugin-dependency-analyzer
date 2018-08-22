@@ -15,7 +15,7 @@ services:
     networks:
       - graph
   neo4j:
-    image: neo4j:3.0
+    image: neo4j:3.4.1
     healthcheck:
       test: ["CMD-SHELL", "/var/lib/neo4j/bin/neo4j status"]
       timeout: 10s
@@ -26,8 +26,6 @@ services:
       - db-data:/data
     env_file:
       - .docker-env
-    expose:
-      - "7687"
     ports:
       - 7474:7474
     networks:

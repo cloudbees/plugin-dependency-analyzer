@@ -30,6 +30,7 @@ spring.profiles: dev
 server.port: 8181
 logging.level:
   com.cloudbees.ce: DEBUG
+  org.neo4j.ogm.drivers.bolt.request: WARN
 spring:
   data.neo4j:
     username: neo4j
