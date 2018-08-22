@@ -1,0 +1,3 @@
+*
+!src/main/docker/*
+!target/plugin-dependency-analyzer.jar
