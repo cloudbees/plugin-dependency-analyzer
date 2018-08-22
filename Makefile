@@ -22,5 +22,5 @@ run: docker
 		-p 7474:7474 -p 7687:7687 neo4j:3.4.1
 	@docker run --rm  -ti \
 	  --env-file .docker-env \
-	  -v ${HOME}/.cache/cloudbees-support/plugins:/var/lib/plugin-dependency-analyzer/.cache/cloudbees/plugins:ro \
-		-p $(PORT):$(PORT) $(IMAGE)
+	  -v ${HOME}/.cache/cloudbees-support/plugins:/var/lib/plugin-dependency-analyzer/.cache/cloudbees-support/plugins:ro \
+	  -p $(PORT):$(PORT) $(IMAGE)

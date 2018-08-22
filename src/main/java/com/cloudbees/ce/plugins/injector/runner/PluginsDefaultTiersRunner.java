@@ -5,10 +5,12 @@ import com.cloudbees.ce.plugins.injector.service.PluginService;
 import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URI;
+import java.nio.file.*;
+import java.util.Collections;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -24,7 +26,18 @@ public class PluginsDefaultTiersRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Files.readAllLines(Paths.get(this.getClass().getResource("/plugins-category/tiers.csv").toURI()))
+        String tierLocation = "/plugins-category";
+        URI uri = new ClassPathResource(tierLocation).getURI();
+        Path path;
+
+        if ("jar".equals(uri.getScheme())) {
+            FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            path = fs.getPath("/BOOT-INF/classes" + tierLocation + "/tiers.csv");
+        } else {
+            path = Paths.get("/plugins-category/tiers.csv");
+        }
+
+        Files.readAllLines(path)
               .stream()
               .map(s -> s.split(","))
               .forEach(pair -> {
