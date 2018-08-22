@@ -5,7 +5,7 @@
 <body>
 <div data-th-replace="~{fragments/header :: navbar}"></div>
 
-<div class="container">
+<main role="main" class="container">
     <div class="jumbotron">
         <h1 class="display-4">
             <span data-th-text="${plugin.name}"></span> ::
@@ -47,7 +47,7 @@
             <div style="width: 100%; min-height: 250px;" id="plugins-dependency-graph"></div>
         </div>
     </div>
-</div>
+</main>
 
 <script type="application/javascript" data-th-src="@{/webjars/d3/dist/d3.js}"></script>
 <script type="application/javascript" data-th-src="@{/webjars/d3-force/build/d3-force.js}"></script>

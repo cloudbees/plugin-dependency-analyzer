@@ -23,10 +23,9 @@
 .table .row .cell:last-child {
     border-right: 1px solid #e6eaee;
 }
-.container {
+main.container {
     margin-top: 1em;
 }
-
 .tab-content {
     padding: 1em;
     border: 1px solid #dee2e6;

@@ -5,7 +5,7 @@
 <body>
 <div data-th-replace="~{fragments/header :: navbar}"></div>
 
-<div class="container">
+<main role="main" class="container">
     <div class="jumbotron">
         <h1 class="display-4"><span data-th-text="${name}"></span></h1>
     </div>
@@ -15,7 +15,6 @@
             <a data-th-href="@{/plugin/{name}/{version}(name = ${name}, version = ${version})}" data-th-text="${version}"></a>
         </li>
     </ul>
-</div>
-
+</main>
 </body>
 </html>
