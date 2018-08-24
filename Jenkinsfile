@@ -11,14 +11,18 @@ pipeline {
     stage('Build') {
       agent { label 'maven-build-tools' }
       steps {
-        sh 'mvn clean package -Dmaven.test.skip=true'
+        withMaven {
+          sh 'mvn clean package -Dmaven.test.skip=true'
+        }
       }
     }
 
     stage('Tests') {
       agent { label 'maven-build-tools' }
       steps {
-        sh 'mvn clean verify'
+        withMaven {
+          sh 'mvn clean verify'
+        }
       }
 
       post {
@@ -31,7 +35,7 @@ pipeline {
 
   post {
     always {
-      notify ( application: "Plugin's dependencies analyzer")
+      notify ( application: "Plugin's dependencies analyzer" )
     }
   }
 }
