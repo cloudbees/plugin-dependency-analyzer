@@ -2,18 +2,23 @@
 
 pipeline {
   options {
-    buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '15'))
+    buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '10'))
   }
-  agent { docker 'alecharp/maven-build-tools' }
+  libraries {
+    lib 'elroy-libs'
+  }
+  agent { none }
 
   stages {
     stage('Build') {
+      agent { label 'maven-build-tools' }
       steps {
         sh 'mvn clean package -Dmaven.test.skip=true'
       }
     }
 
     stage('Tests') {
+      agent { label 'maven-build-tools' }
       steps {
         sh 'mvn clean verify'
       }
@@ -22,6 +27,12 @@ pipeline {
         always {
           junit allowEmptyResults: true, testResults: 'target/*-reports/*.xml'
         }
+      }
+    }
+
+    post {
+      always {
+        notify ( application: "Plugin's dependencies analyzer")
       }
     }
   }
