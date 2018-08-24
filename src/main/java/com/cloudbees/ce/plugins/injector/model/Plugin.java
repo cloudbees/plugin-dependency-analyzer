@@ -43,7 +43,7 @@ public class Plugin {
     }
 
     public Plugin(String name, String version, String coreVersion) {
-        this(name, version, coreVersion, Tier.TIER_3);
+        this(name, version, coreVersion, Tier.none);
     }
 
     public Plugin(String name, String version, String coreVersion, Tier tier) {
@@ -83,6 +83,11 @@ public class Plugin {
         return this;
     }
 
+    public Plugin setTier(Tier tier) {
+        this.tier = tier;
+        return this;
+    }
+
     public Tier getTier() {
         return tier;
     }
@@ -93,7 +98,7 @@ public class Plugin {
         if (o == null || getClass() != o.getClass()) return false;
         Plugin plugin = (Plugin) o;
         return Objects.equals(name, plugin.name) &&
-            Objects.equals(version, plugin.version);
+              Objects.equals(version, plugin.version);
     }
 
     @Override

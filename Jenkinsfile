@@ -1,21 +1,28 @@
-#!/usr/bin/env groovy
-
 pipeline {
   options {
-    buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '15'))
+    buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '10'))
   }
-  agent { docker 'alecharp/maven-build-tools' }
+  libraries {
+    lib 'elroy-libs'
+  }
+  agent none
 
   stages {
     stage('Build') {
+      agent { label 'maven-build-tools' }
       steps {
-        sh 'mvn clean package -Dmaven.test.skip=true'
+        withMaven {
+          sh 'mvn clean package -Dmaven.test.skip=true'
+        }
       }
     }
 
     stage('Tests') {
+      agent { label 'maven-build-tools' }
       steps {
-        sh 'mvn clean verify'
+        withMaven {
+          sh 'mvn clean verify'
+        }
       }
 
       post {
@@ -23,6 +30,12 @@ pipeline {
           junit allowEmptyResults: true, testResults: 'target/*-reports/*.xml'
         }
       }
+    }
+  }
+
+  post {
+    always {
+      notify ( application: "Plugin's dependencies analyzer" )
     }
   }
 }

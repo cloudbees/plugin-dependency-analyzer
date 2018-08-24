@@ -32,7 +32,7 @@ public class PluginsImporterRunner implements CommandLineRunner {
             LOG.debug("Start crawling local repository: {}", localRepository);
             Files.walkFileTree(localRepository, new FileVisitor<Path>() {
                 @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
                     return FileVisitResult.CONTINUE;
                 }
 
@@ -49,12 +49,12 @@ public class PluginsImporterRunner implements CommandLineRunner {
                 }
 
                 @Override
-                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                public FileVisitResult visitFileFailed(Path file, IOException exc) {
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
                     return FileVisitResult.CONTINUE;
                 }
             });

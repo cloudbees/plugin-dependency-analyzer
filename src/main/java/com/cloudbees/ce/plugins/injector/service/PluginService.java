@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -89,7 +90,7 @@ public class PluginService {
     }
 
     @Transactional
-    public void updatePluginTier(String pluginName, Tier tier) {
+    public void updatePluginTier(String pluginName, @NotNull Tier tier) {
         pluginRepository.setTierForPlugin(pluginName, tier.name());
     }
 
