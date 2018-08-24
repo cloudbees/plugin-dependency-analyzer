@@ -1,5 +1,3 @@
-#!/usr/bin/env groovy
-
 pipeline {
   options {
     buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '10'))
@@ -7,7 +5,7 @@ pipeline {
   libraries {
     lib 'elroy-libs'
   }
-  agent { none }
+  agent none
 
   stages {
     stage('Build') {
@@ -29,11 +27,11 @@ pipeline {
         }
       }
     }
+  }
 
-    post {
-      always {
-        notify ( application: "Plugin's dependencies analyzer")
-      }
+  post {
+    always {
+      notify ( application: "Plugin's dependencies analyzer")
     }
   }
 }
