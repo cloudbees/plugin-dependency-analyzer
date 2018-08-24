@@ -6,15 +6,18 @@
 <div data-th-replace="~{fragments/header :: navbar}"></div>
 
 <main role="main" class="container">
-    <div class="jumbotron">
-        <h1 class="display-4"><span data-th-text="${name}"></span></h1>
+    <div class="header">
+        <h1 data-th-text="${name}"></h1>
     </div>
-    <h2 class="display-5" data-th-utext="#{plugin.numberOfVersions(${name}, ${#lists.size(versions)})}"></h2>
-    <ul>
-        <li data-th-each="version: ${versions}">
-            <a data-th-href="@{/plugin/{name}/{version}(name = ${name}, version = ${version})}" data-th-text="${version}"></a>
-        </li>
-    </ul>
+    <section>
+        <h2 data-th-utext="#{plugin.numberOfVersions(${name}, ${#lists.size(versions)})}"></h2>
+        <ul class="grid columns-auto">
+            <li data-th-each="version: ${versions}">
+                <a data-th-href="@{/plugin/{name}/{version}(name = ${name}, version = ${version})}"
+                   data-th-text="${version}"></a>
+            </li>
+        </ul>
+    </section>
 </main>
 </body>
 </html>

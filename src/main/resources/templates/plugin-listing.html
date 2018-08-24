@@ -6,8 +6,10 @@
 <div data-th-replace="~{fragments/header :: navbar}"></div>
 
 <main role="main" class="container">
-    <h2 data-th-utext="#{plugins.list.entries(${plugins.getTotalElements()})}"></h2>
-    <div data-th-if="${plugins.getTotalElements()} > 0">
+    <div class="header">
+        <h1>Plugins</h1>
+    </div>
+    <section data-th-if="${plugins.getTotalElements()} > 0">
         <nav>
             <ul class="pagination justify-content-center" data-th-if="${plugins.totalPages != 1}">
                 <li class="page-item" data-th-attrappend="class=${plugins.number == 0} ? ' disabled'">
@@ -46,9 +48,7 @@
                     <a data-th-href="@{/plugin/{name}(name = ${plugin.name})}" data-th-text="${plugin.name}"></a>
                 </div>
                 <div class="cell">
-                <span class="badge"
-                      data-th-classappend="${plugin.tier} == 'TIER_1' ? 'badge-success' : (${plugin.tier} == 'TIER_2' ? 'badge-info' : (${plugin.tier} == 'TIER_3' ? 'badge-warning' : (${plugin.tier} == 'TIER_4' ? 'badge-danger')))"
-                      data-th-text="${plugin.tier}"></span>
+                    <span data-th-text="${plugin.tier}"></span>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                 </li>
             </ul>
         </nav>
-    </div>
+    </section>
 </main>
 </body>
 </html>

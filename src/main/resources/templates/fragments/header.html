@@ -3,33 +3,25 @@
 <head data-th-fragment="head">
     <meta charset="UTF-8">
     <title>CloudBees Support Plugins</title>
-    <link rel="stylesheet" data-th-href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}"/>
     <link rel="stylesheet" data-th-href="@{/style/index.css}"/>
     <script type="application/javascript" data-th-src="@{/webjars/jquery/dist/jquery.min.js}"></script>
-    <script type="application/javascript" data-th-src="@{/webjars/bootstrap/dist/js/bootstrap.min.js}"></script>
 </head>
 
 <body>
-<nav data-th-fragment="navbar" class="navbar navbar-expand-md navbar-light bg-light justify-content-between">
-    <a data-th-href="@{/}" class="navbar-brand">
+<nav data-th-fragment="navbar">
+    <a data-th-href="@{/}" class="logo">
         <img src="/favicon.ico" width="24"/>
-        CloudBees
     </a>
 
     <div class="collapse navbar-collapse mr-auto" id="navbarLinks">
         <ul class="navbar-nav mr-auto">
             <li class="navbar-item">
-                <a class="p-2 text-dark" data-th-href="@{/plugins}">Plugins</a>
+                <a class="p-2 text-dark" data-th-href="@{/plugins}">
+                    Plugins
+                </a>
             </li>
         </ul>
-        <form action="/search" class="form-inline my-2 my-lg-0" method="GET">
-            <input type="text" accesskey="?" class="form-control mr-sm-2" placeholder="Search" name="q"/>
-        </form>
     </div>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 </nav>
 </body>
 </html>
